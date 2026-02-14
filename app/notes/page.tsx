@@ -1,4 +1,5 @@
 import Note from "@/components/ui/note";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Bookmark, Flame, Heart, Plus } from "lucide-react";
 
 export default async function NotesPage() {
@@ -16,7 +17,7 @@ export default async function NotesPage() {
             className="py-2.5 px-4.5 rounded-md outline-0 bg-neutral-900"
           />
           <TabsLine />
-          <div className="flex flex-col md:gap-7 gap-10 mt-0">
+          <div className="flex flex-col md:gap-7 gap-10 mt-0 pb-15">
             <Note active={true} />
             <Note />
             <Note />
@@ -44,9 +45,6 @@ export default async function NotesPage() {
     </main>
   );
 }
-
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Divider } from "@/components/ui/_ext/divider";
 
 export function TabsLine() {
   return (

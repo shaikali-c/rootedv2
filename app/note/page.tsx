@@ -1,16 +1,43 @@
 "use client";
 import { DropdownMenuComponent } from "@/components/build/drop-down";
+import useDebounce from "@/hooks/useDebounce";
 import { hashText } from "@/lib/hash";
-import { Dot } from "lucide-react";
-import { useEffect, useState } from "react";
-
-type User = {
-  title: string;
-  note: string;
-};
+import { wordCount } from "@/lib/wordCount";
+import { Content } from "@/types/global";
+import { CheckCheck, Dot, LoaderCircle } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 
 export default function Note() {
-  const [content, setContent] = useState<User>({ title: "", note: "" });
+  const [content, setContent] = useState<Content>({ title: "", note: "" });
+  const [isSaving, setIsSaving] = useState(false);
+  const wordsCount = wordCount(content.note);
+
+  const lastHashRef = useRef<bigint | null>(null);
+  const isFirstRun = useRef(true);
+  const debouncedContent = useDebounce(content, 3000);
+
+  useEffect(() => {
+    if (isFirstRun.current) {
+      isFirstRun.current = false;
+      return;
+    }
+    const run = async () => {
+      const serialized = `${debouncedContent.title}\n${debouncedContent.note}`;
+
+      const newHash = await hashText(serialized);
+
+      if (newHash === lastHashRef.current) return;
+
+      setIsSaving(true);
+      await fakeSave(debouncedContent);
+      console.log("Saved to DB");
+      lastHashRef.current = newHash;
+      setIsSaving(false);
+    };
+
+    run();
+  }, [debouncedContent]);
+
   const handleChange = (
     e:
       | React.ChangeEvent<HTMLInputElement>
@@ -22,12 +49,7 @@ export default function Note() {
       [name]: value,
     }));
   };
-  const hashit = async () => {
-    const text = "SHAIKALI";
-    const hash = await hashText(text);
-    console.log(hash);
-  };
-  useEffect(() => {}, [content]);
+
   return (
     <main className="w-full h-dvh flex justify-center font-sans">
       <section className="md:max-w-5xl w-full h-full bg-neutral-950 grid grid-rows-[50px_1fr_20px] md:p-10 md:px-7 p-5 px-6 gap-5 ">
@@ -61,14 +83,33 @@ export default function Note() {
             onChange={handleChange}
             spellCheck={false}
             placeholder="Start writing from here..."
-            className="w-full h-full resize-none font-diary text-xl leading-relaxed tracking-wide outline-0 text-neutral-300"
+            className="w-full h-full resize-none font-diary text-xl leading-relaxed tracking-wide outline-0 text-neutral-100"
           />
         </section>
         <footer className="flex justify-between items-center text-muted-foreground text-sm">
-          <p>Saved just now</p>
-          <p>16 words</p>
+          {isSaving ? (
+            <div className="flex items-center gap-1.5">
+              <LoaderCircle
+                className="animate-spin text-emerald-500"
+                size={15}
+              />{" "}
+              <span>Saving</span>
+            </div>
+          ) : (
+            <div className="flex items-center gap-1.5">
+              <CheckCheck className="text-emerald-500" size={15} />
+              <span>Saved</span>
+            </div>
+          )}
+          <p>
+            {wordsCount === 1 ? `${wordsCount} word` : `${wordsCount} words`}
+          </p>
         </footer>
       </section>
     </main>
   );
+}
+
+async function fakeSave(data: Content) {
+  return new Promise((r) => setTimeout(r, 3000));
 }
