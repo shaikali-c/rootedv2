@@ -1,9 +1,31 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import {
+  Geist,
+  Geist_Mono,
+  Inter,
+  PT_Serif,
+  Source_Serif_4,
+} from "next/font/google";
 import "./globals.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
+
+const inter = Inter({
+  variable: "--font-primary-sans",
+  subsets: ["latin"],
+});
+
+const secondary = PT_Serif({
+  variable: "--font-d-secondary",
+  weight: ["400"],
+  subsets: ["latin"],
+});
+
+const diary = Source_Serif_4({
+  variable: "--font-diary-",
   subsets: ["latin"],
 });
 
@@ -23,9 +45,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} ${secondary.variable} font-sans ${diary.variable} antialiased`}
       >
         {children}
       </body>
