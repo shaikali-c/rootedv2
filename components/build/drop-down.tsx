@@ -53,7 +53,7 @@ export function DropdownMenuComponent() {
             <DropdownMenuSubTrigger>Invite users</DropdownMenuSubTrigger>
             <DropdownMenuPortal>
               <DropdownMenuSubContent>
-                <DropdownMenuItem>Email</DropdownMenuItem>
+                <DropdownMenuItem>Username</DropdownMenuItem>
                 <DropdownMenuItem>Message</DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>More...</DropdownMenuItem>

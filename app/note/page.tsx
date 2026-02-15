@@ -30,7 +30,6 @@ export default function Note() {
 
       setIsSaving(true);
       await fakeSave(debouncedContent);
-      console.log("Saved to DB");
       lastHashRef.current = newHash;
       setIsSaving(false);
     };

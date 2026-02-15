@@ -1,3 +1,4 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -9,13 +10,35 @@ import {
 import {
   Field,
   FieldDescription,
+  FieldError,
   FieldGroup,
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
+import { useState } from "react";
+import { Spinner } from "./ui/spinner";
+import { signUp } from "@/app/actions/auth";
+import { redirect } from "next/navigation";
 
 export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const handleSignupSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (loading) return;
+    setLoading(true);
+    const form = new FormData(e.currentTarget);
+    const res = await signUp(form);
+    if (res?.error) {
+      setError(res.error);
+      setLoading(false);
+      return;
+    }
+    setError(null);
+    setLoading(false);
+    if (res.success) redirect("/notes");
+  };
   return (
     <Card {...props}>
       <CardHeader>
@@ -25,13 +48,14 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <form>
+        <form onSubmit={handleSignupSubmit}>
           <FieldGroup>
             <Field>
-              <FieldLabel htmlFor="email">Email</FieldLabel>
+              <FieldLabel htmlFor="username">Username</FieldLabel>
               <Input
-                id="email"
-                type="email"
+                id="username"
+                type="text"
+                name="username"
                 placeholder="m@example.com"
                 required
               />
@@ -42,17 +66,25 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
             </Field>
             <Field>
               <FieldLabel htmlFor="password">Password</FieldLabel>
-              <Input id="password" type="password" required />
+              <Input name="password" id="password" type="password" required />
             </Field>
             <Field>
               <FieldLabel htmlFor="confirm-password">
                 Confirm Password
               </FieldLabel>
-              <Input id="confirm-password" type="password" required />
+              <Input
+                id="confirm-password"
+                name="c_password"
+                type="password"
+                required
+              />
+              {error && <FieldError>{error}</FieldError>}
             </Field>
             <FieldGroup>
               <Field>
-                <Button type="submit">Create Account</Button>
+                <Button type="submit" disabled={loading}>
+                  {loading && <Spinner />}Create Account
+                </Button>
                 <FieldDescription className="px-6 text-center">
                   Already have an account? <Link href="/login">Sign in</Link>
                 </FieldDescription>

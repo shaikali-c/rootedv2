@@ -1,3 +1,4 @@
+"use client";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -16,28 +17,50 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
+import { useState } from "react";
+import { Spinner } from "./ui/spinner";
+import { signIn } from "@/app/actions/auth";
+import { redirect } from "next/navigation";
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleLoginSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (loading) return;
+    setLoading(true);
+    const form = new FormData(e.currentTarget);
+    const res = await signIn(form);
+    if (res?.error) {
+      setError(res.error);
+      return setLoading(false);
+    }
+    setError(null);
+    setLoading(false);
+    if (res.success) redirect("/notes");
+  };
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
         <CardHeader>
           <CardTitle>Login to your account</CardTitle>
           <CardDescription>
-            Enter your email below to login to your account
+            Enter your username below to login to your account
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form>
+          <form onSubmit={handleLoginSubmit}>
             <FieldGroup>
               <Field>
-                <FieldLabel htmlFor="email">Email</FieldLabel>
+                <FieldLabel htmlFor="username">Username</FieldLabel>
                 <Input
-                  id="email"
-                  type="email"
+                  id="username"
+                  name="username"
+                  type="text"
                   placeholder="m@example.com"
                   required
                 />
@@ -46,10 +69,14 @@ export function LoginForm({
                 <div className="flex items-center">
                   <FieldLabel htmlFor="password">Password</FieldLabel>
                 </div>
-                <Input id="password" type="password" required />
+                <Input id="password" name="password" type="password" required />
+                {error && <FieldError>{error}</FieldError>}
               </Field>
               <Field>
-                <Button type="submit">Login</Button>
+                <Button type="submit" disabled={loading}>
+                  {loading && <Spinner />}
+                  Login
+                </Button>
                 <Button variant="outline" type="button">
                   Login with Google
                 </Button>

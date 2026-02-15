@@ -1,8 +1,10 @@
 import Note from "@/components/ui/note";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Bookmark, Flame, Heart, Plus } from "lucide-react";
+import { headers } from "next/headers";
 
 export default async function NotesPage() {
+  const userId = (await headers()).get("x-user-id");
   return (
     <main className="w-screen min-h-dvh flex justify-center">
       <section className="w-full min-h-dvh grid md:grid-cols-[37%_1fr] max-w-7xl mask-[linear-gradient(to_bottom,#f8f8f8_70%,transparent_100%)]">
