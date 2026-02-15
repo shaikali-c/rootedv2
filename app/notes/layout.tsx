@@ -4,6 +4,9 @@ import { Bookmark, Flame, Heart } from "lucide-react";
 import { DropdownMenuComponentNotes } from "@/components/build/drop-down-notes";
 import { Props } from "@/types/global";
 import NotesContainer from "@/components/ui/notes_container";
+import { Suspense } from "react";
+import NotesLoader from "@/components/notes_loader";
+import NotesSkeleton from "@/components/ui/notesskeleton";
 
 export default async function NotesPage({ children }: Props) {
   const fetch_notes = await getNotes();
@@ -23,6 +26,9 @@ export default async function NotesPage({ children }: Props) {
           />
           <TabsLine />
           <NotesContainer fetch_notes={fetch_notes} />
+          <Suspense fallback={<NotesSkeleton />}>
+            <NotesLoader />
+          </Suspense>
         </div>
         {children}
       </section>
