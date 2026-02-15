@@ -1,16 +1,12 @@
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { getNotes } from "../actions/note";
 import { Bookmark, Flame, Heart } from "lucide-react";
 import { DropdownMenuComponentNotes } from "@/components/build/drop-down-notes";
 import { Props } from "@/types/global";
-import NotesContainer from "@/components/ui/notes_container";
 import { Suspense } from "react";
 import NotesLoader from "@/components/notes_loader";
 import NotesSkeleton from "@/components/ui/notesskeleton";
 
 export default async function NotesPage({ children }: Props) {
-  const fetch_notes = await getNotes();
-
   return (
     <main className="w-screen min-h-dvh flex justify-center">
       <section className="w-full min-h-dvh md:grid md:grid-cols-[37%_1fr] max-w-7xl mask-[linear-gradient(to_bottom,#f8f8f8_70%,transparent_100%)]">
@@ -25,7 +21,6 @@ export default async function NotesPage({ children }: Props) {
             className="py-2.5 px-4.5 rounded-md outline-0 bg-neutral-900"
           />
           <TabsLine />
-          <NotesContainer fetch_notes={fetch_notes} />
           <Suspense fallback={<NotesSkeleton />}>
             <NotesLoader />
           </Suspense>
