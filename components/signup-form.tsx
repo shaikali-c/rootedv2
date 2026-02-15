@@ -57,13 +57,10 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
                 id="username"
                 type="text"
                 name="username"
-                placeholder="m@example.com"
+                placeholder="Batman"
                 required
               />
-              <FieldDescription>
-                We&apos;ll use this to contact you. We will not share your email
-                with anyone else.
-              </FieldDescription>
+              <FieldDescription>Choose a very unqiue username</FieldDescription>
             </Field>
             <Field>
               <FieldLabel htmlFor="password">Password</FieldLabel>

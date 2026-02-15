@@ -62,7 +62,7 @@ export function LoginForm({
                   id="username"
                   name="username"
                   type="text"
-                  placeholder="m@example.com"
+                  placeholder="Spider Man"
                   required
                 />
               </Field>
@@ -78,8 +78,8 @@ export function LoginForm({
                   {loading && <Spinner />}
                   Login
                 </Button>
-                <Button variant="outline" type="button">
-                  Login with Google
+                <Button variant="outline" type="button" disabled>
+                  Login anonymously (Soon)
                 </Button>
                 <FieldDescription className="text-center">
                   Don&apos;t have an account?{" "}

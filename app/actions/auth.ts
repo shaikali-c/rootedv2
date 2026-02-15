@@ -15,16 +15,16 @@ async function createJWT(userId: string, username: string) {
 }
 
 export async function signUp(formData: FormData) {
-  const username = formData.get("username") as string;
-  const password = formData.get("password") as string;
-  const c_password = formData.get("c_password") as string;
+  const username = (formData.get("username") as string).trim();
+  const password = (formData.get("password") as string).trim();
+  const c_password = (formData.get("c_password") as string).trim();
 
   if (!username || !password || !c_password) {
     return { error: "Missing fields" };
   }
 
   if (!(password === c_password)) {
-    return { error: "Password don't match!" };
+    return { error: "Passwords don't match!" };
   }
 
   const { data: existing } = await supabase
@@ -68,8 +68,8 @@ export async function signUp(formData: FormData) {
 
 export async function signIn(formData: FormData) {
   const cookieStore = await cookies();
-  const username = formData.get("username") as string;
-  const password = formData.get("password") as string;
+  const username = (formData.get("username") as string).trim();
+  const password = (formData.get("password") as string).trim();
   const { data, error } = await supabase
     .from("users")
     .select("*")
@@ -77,7 +77,7 @@ export async function signIn(formData: FormData) {
     .single();
 
   if (!data) {
-    return { error: "Username not found!" };
+    return { error: "Failed to authenticate!" };
   }
   const valid = await bcrypt.compare(password, data?.password);
   if (!valid) {

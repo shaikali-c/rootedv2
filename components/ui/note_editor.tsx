@@ -79,9 +79,7 @@ export default function NoteEditor({ note_id }: { note_id: string }) {
           <h2 className="flex items-center">
             Rooted
             <Dot />
-            <span className="text-muted-foreground text-sm">
-              Friday 19, Oct
-            </span>
+            <span className="text-muted-foreground text-sm">{date_f}</span>
           </h2>
           <DropdownMenuComponent />
         </header>
