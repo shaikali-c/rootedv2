@@ -15,7 +15,7 @@ async function createJWT(userId: string, username: string) {
 }
 
 export async function signUp(formData: FormData) {
-  const username = (formData.get("username") as string).trim();
+  const username = (formData.get("username") as string).trim().toLowerCase();
   const password = (formData.get("password") as string).trim();
   const c_password = (formData.get("c_password") as string).trim();
 
@@ -35,6 +35,10 @@ export async function signUp(formData: FormData) {
 
   if (existing) {
     return { error: "Username already taken!" };
+  }
+  const validUname = /^(?!_)(?!.*__)[a-z0-9_]{5,20}(?<!_)$/;
+  if (!validUname) {
+    return { error: "Invalid username, choose another one!" };
   }
 
   const passwordHash = await bcrypt.hash(password, 12);
@@ -68,7 +72,7 @@ export async function signUp(formData: FormData) {
 
 export async function signIn(formData: FormData) {
   const cookieStore = await cookies();
-  const username = (formData.get("username") as string).trim();
+  const username = (formData.get("username") as string).trim().toLowerCase();
   const password = (formData.get("password") as string).trim();
   const { data, error } = await supabase
     .from("users")
