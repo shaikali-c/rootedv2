@@ -1,18 +1,18 @@
+import { date_f } from "@/lib/date";
+
 export default async function NotesPage() {
   return (
     <div className="md:p-30 p-7 font-secondary md:flex hidden flex-col gap-5 ">
-      <p className="text-xs text-muted-foreground font-sans">Friday 19, Jan</p>
+      <p className="text-xs text-muted-foreground font-sans">{date_f}</p>
       <h2 className="md:text-4xl font-charter text-3xl">
-        Hey, how's your day?
+        Private notes, cryptographically secured by design.
       </h2>
       <p className="leading-6.5 text-neutral-300/90 font-sans tracking-wide whitespace-pre-wrap ">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-        veniam, Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem
-        ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-        incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-        Lorem ipsum dolor sit amet, consectetur
-        {"\n\n\n"}So my days went off.
+        Rooted is a secure note-taking application built around a simple
+        principle: your notes should belong only to you. Every note is encrypted
+        so that no third party, including the server, can read its contents.
+        Rooted turns ordinary note-taking into a privacy-first workflow,
+        protecting personal notes, ideas, and data from exposure.
       </p>
     </div>
   );

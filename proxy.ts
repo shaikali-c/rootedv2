@@ -22,7 +22,7 @@ export async function proxy(req: NextRequest) {
     // clone headers only when needed
     const headers = new Headers(req.headers);
     headers.set("x-user-id", userId);
-    headers.set("x-username", username);
+    if (username) headers.set("x-username", username);
 
     return NextResponse.next({
       request: { headers },
