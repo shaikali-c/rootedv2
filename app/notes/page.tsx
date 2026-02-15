@@ -1,6 +1,14 @@
+import { Button } from "@/components/ui/button";
 import Note from "@/components/ui/note";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Bookmark, Flame, Heart, Plus } from "lucide-react";
+import {
+  Bookmark,
+  Flame,
+  Heart,
+  Plus,
+  SquarePen,
+  StickyNote,
+} from "lucide-react";
 import { headers } from "next/headers";
 
 export default async function NotesPage() {
@@ -11,7 +19,7 @@ export default async function NotesPage() {
         <div className="md:p-10 p-6 md:border-r flex flex-col md:gap-6 gap-4 pt-5 md:max-h-dvh md:overflow-y-auto no-scrollbar">
           <header className="font-semibold text-lg font-sans flex items-center justify-between">
             <h2>Rooted</h2>
-            <Plus size={20} />
+            <NotesDropDown />
           </header>
           <input
             type="text"
@@ -66,5 +74,48 @@ export function TabsLine() {
         </TabsTrigger>
       </TabsList>
     </Tabs>
+  );
+}
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  CreditCardIcon,
+  LogOutIcon,
+  SettingsIcon,
+  UserIcon,
+} from "lucide-react";
+import DropDownMenuItemLogout from "@/components/ui/custom/custom_dropdown";
+
+function NotesDropDown() {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost">
+          <Plus className="w-5! h-5!" />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="w-40 font-sans">
+        <DropdownMenuItem>
+          <StickyNote />
+          New note
+        </DropdownMenuItem>
+        <DropdownMenuItem>
+          <SquarePen />
+          Manage notes
+        </DropdownMenuItem>
+        <DropdownMenuItem>
+          <SettingsIcon />
+          Settings
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropDownMenuItemLogout />
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }
