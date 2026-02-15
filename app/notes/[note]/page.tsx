@@ -11,7 +11,7 @@ export default async function Note({
   const { title, note: content, date, error } = await getNote(note);
   if (error)
     return (
-      <div className="md:p-30 p-7 flex justify-center flex-col gap-4 items-center pt-30">
+      <div className="md:p-30 p-7 pt-5 flex justify-center flex-col gap-4 items-center">
         <Rose size={50} />
         <p>
           Note not found{" "}

@@ -5,7 +5,6 @@ import { Props } from "@/types/global";
 import { Suspense } from "react";
 import NotesLoader from "@/components/notes_loader";
 import NotesSkeleton from "@/components/ui/notesskeleton";
-import Divider from "@/components/ui/divider";
 
 export default async function NotesPage({ children }: Props) {
   return (
@@ -24,7 +23,6 @@ export default async function NotesPage({ children }: Props) {
           <TabsLine />
           <Suspense fallback={<NotesSkeleton />}>
             <NotesLoader />
-            <Divider />
           </Suspense>
         </div>
         {children}

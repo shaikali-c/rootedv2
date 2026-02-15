@@ -2,7 +2,7 @@ import { date_f } from "@/lib/date";
 
 export default async function NotesPage() {
   return (
-    <div className="md:p-30 p-7 font-secondary md:flex hidden flex-col gap-5 ">
+    <div className="md:p-30 p-7 pt-5 font-secondary md:flex hidden flex-col gap-5 ">
       <p className="text-xs text-muted-foreground font-sans">{date_f}</p>
       <h2 className="md:text-4xl font-charter text-3xl">
         Private notes, cryptographically secured by design.
