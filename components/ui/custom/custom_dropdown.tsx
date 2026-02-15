@@ -13,7 +13,11 @@ export default function DropDownMenuItemLogout() {
   };
 
   return (
-    <DropdownMenuItem variant="destructive" onClick={handleLogout}>
+    <DropdownMenuItem
+      variant="destructive"
+      onClick={handleLogout}
+      className="cursor-pointer"
+    >
       <LogOutIcon />
       Log out
     </DropdownMenuItem>

@@ -16,6 +16,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Ellipsis } from "lucide-react";
+import Link from "next/link";
 
 export function DropdownMenuComponent() {
   const [mounted, setMounted] = useState(false);
@@ -32,13 +33,12 @@ export function DropdownMenuComponent() {
       </DropdownMenuTrigger>
       <DropdownMenuContent className="font-primary w-55" align="start">
         <DropdownMenuGroup>
-          <DropdownMenuLabel>My Account</DropdownMenuLabel>
+          <DropdownMenuLabel>Menu</DropdownMenuLabel>
+          <Link href={"/notes"}>
+            <DropdownMenuItem>Notes</DropdownMenuItem>
+          </Link>
           <DropdownMenuItem>
-            Profile
-            <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            Billing
+            Discard
             <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
           </DropdownMenuItem>
           <DropdownMenuItem>

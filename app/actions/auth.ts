@@ -6,8 +6,8 @@ import bcrypt from "bcryptjs";
 import { cookies } from "next/headers";
 const secret = new TextEncoder().encode(process.env.JWT_SECRET!);
 
-async function createJWT(userId: string) {
-  return await new SignJWT({ sub: userId })
+async function createJWT(userId: string, username: string) {
+  return await new SignJWT({ sub: userId, username })
     .setProtectedHeader({ alg: "HS256" })
     .setExpirationTime("7d")
     .setIssuedAt()
@@ -54,9 +54,8 @@ export async function signUp(formData: FormData) {
   if (error) {
     return { error: error.message };
   }
-  console.log(data?.salt);
   const cookieStore = await cookies();
-  const jwt = await createJWT(data?.id);
+  const jwt = await createJWT(data?.id, username);
   cookieStore.set("auth_token", jwt, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
@@ -83,8 +82,7 @@ export async function signIn(formData: FormData) {
   if (!valid) {
     return { error: "Failed to authenticate!" };
   }
-  const salt = new Uint8Array(Buffer.from(data.salt, "base64"));
-  const jwt = await createJWT(data?.id);
+  const jwt = await createJWT(data?.id, username);
   cookieStore.set("auth_token", jwt, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",

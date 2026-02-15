@@ -42,6 +42,5 @@ async function main() {
     17, 193, 52, 226, 168, 217, 35, 122, 85, 195, 22,
   ];
   const note = await decrypt_note({ iv, data }, key);
-  console.log(note);
 }
 main();

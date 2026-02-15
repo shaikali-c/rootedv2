@@ -9,7 +9,11 @@ import { CheckCheck, Dot, LoaderCircle } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 export default function NoteEditor({ note_id }: { note_id: string }) {
-  const [content, setContent] = useState<Content>({ title: "", note: "" });
+  const [content, setContent] = useState<Content>({
+    title: "",
+    note: "",
+    uid: note_id,
+  });
   const [isSaving, setIsSaving] = useState(false);
   const wordsCount = wordCount(content.note);
 
