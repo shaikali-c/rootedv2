@@ -7,6 +7,7 @@ import { Content } from "@/types/global";
 import { derive_key } from "@/lib/cryptography/key";
 import { encrypt_note } from "@/lib/cryptography/encrypt";
 import { decrypt_note } from "@/lib/cryptography/decrypt";
+import { date_f } from "@/lib/date";
 
 export async function createNote() {
   const username = (await headers()).get("x-username");
@@ -16,6 +17,7 @@ export async function createNote() {
     .insert({
       owner: username,
       uid: noteId,
+      date: date_f,
     })
     .select()
     .maybeSingle();
@@ -59,14 +61,15 @@ export async function getNotes() {
   const notes = await Promise.all(
     filter_data?.map(async (elem) => {
       const decrypted = await decrypt_note(JSON.parse(elem.payload), key);
-      const note = JSON.parse(decrypted); // convert string -> object
+      const note = JSON.parse(decrypted);
       return {
         uid: elem.uid,
         ...note,
       };
     }) ?? [],
   );
-  return notes;
+  const filtered = notes.filter((elem) => elem.title && elem.note);
+  return filtered;
 }
 
 export async function getNote(uid: string) {

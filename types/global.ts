@@ -2,6 +2,7 @@ export type Content = {
   title: string;
   note: string;
   uid: string;
+  date: string;
 };
 
 export type NoteProp = {

@@ -60,6 +60,7 @@ export async function signUp(formData: FormData) {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
+    maxAge: 60 * 60 * 24 * 30,
     path: "/",
   });
   return { success: true };
@@ -86,6 +87,7 @@ export async function signIn(formData: FormData) {
   cookieStore.set("auth_token", jwt, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
+    maxAge: 60 * 60 * 24 * 30,
     sameSite: "lax",
     path: "/",
   });
