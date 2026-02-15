@@ -4,7 +4,7 @@ export default function NotesSkeleton() {
     <div className="flex flex-col gap-5">
       <Skeleton className="h-50 w-full" />
       <Skeleton className="h-50 w-full" />
-      <Skeleton className="h-50 w-full" />
+      <Skeleton className="h-50 w-full hidden md:block" />
     </div>
   );
 }
