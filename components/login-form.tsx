@@ -20,7 +20,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { Spinner } from "./ui/spinner";
 import { signIn } from "@/app/actions/auth";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export function LoginForm({
   className,
@@ -29,6 +29,7 @@ export function LoginForm({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const router = useRouter();
   const handleLoginSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (loading) return;
@@ -41,7 +42,7 @@ export function LoginForm({
     }
     setError(null);
     setLoading(false);
-    if (res.success) redirect("/notes");
+    router.push("/notes");
   };
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>

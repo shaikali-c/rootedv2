@@ -38,12 +38,15 @@ export async function signUp(formData: FormData) {
   }
 
   const passwordHash = await bcrypt.hash(password, 12);
+  const salt = crypto.getRandomValues(new Uint8Array(16));
+  const saltBase64 = Buffer.from(salt).toString("base64");
 
   const { data, error } = await supabase
     .from("users")
     .insert({
       username,
       password: passwordHash,
+      salt: saltBase64,
     })
     .select()
     .single();
@@ -51,6 +54,7 @@ export async function signUp(formData: FormData) {
   if (error) {
     return { error: error.message };
   }
+  console.log(data?.salt);
   const cookieStore = await cookies();
   const jwt = await createJWT(data?.id);
   cookieStore.set("auth_token", jwt, {
@@ -79,6 +83,7 @@ export async function signIn(formData: FormData) {
   if (!valid) {
     return { error: "Failed to authenticate!" };
   }
+  const salt = new Uint8Array(Buffer.from(data.salt, "base64"));
   const jwt = await createJWT(data?.id);
   cookieStore.set("auth_token", jwt, {
     httpOnly: true,

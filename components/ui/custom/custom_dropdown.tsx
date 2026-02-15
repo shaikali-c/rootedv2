@@ -1,13 +1,17 @@
 "use client";
 import { LogOutIcon } from "lucide-react";
 import { DropdownMenuItem } from "../dropdown-menu";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export default function DropDownMenuItemLogout() {
+  const router = useRouter();
+
   const handleLogout = async () => {
-    await fetch("/api/logout");
-    redirect("/login");
+    await fetch("/api/logout", { method: "GET" });
+    router.replace("/login");
+    router.refresh();
   };
+
   return (
     <DropdownMenuItem variant="destructive" onClick={handleLogout}>
       <LogOutIcon />

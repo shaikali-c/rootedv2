@@ -84,13 +84,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  CreditCardIcon,
-  LogOutIcon,
-  SettingsIcon,
-  UserIcon,
-} from "lucide-react";
+import { SettingsIcon } from "lucide-react";
 import DropDownMenuItemLogout from "@/components/ui/custom/custom_dropdown";
+import Link from "next/link";
 
 function NotesDropDown() {
   return (
@@ -102,8 +98,10 @@ function NotesDropDown() {
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-40 font-sans">
         <DropdownMenuItem>
-          <StickyNote />
-          New note
+          <Link href={"/note"} className="flex gap-2 items-center">
+            <StickyNote />
+            New note
+          </Link>
         </DropdownMenuItem>
         <DropdownMenuItem>
           <SquarePen />

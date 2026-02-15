@@ -19,9 +19,10 @@ import Link from "next/link";
 import { useState } from "react";
 import { Spinner } from "./ui/spinner";
 import { signUp } from "@/app/actions/auth";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const handleSignupSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -37,7 +38,7 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
     }
     setError(null);
     setLoading(false);
-    if (res.success) redirect("/notes");
+    router.push("/notes");
   };
   return (
     <Card {...props}>

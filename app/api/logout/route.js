@@ -8,7 +8,7 @@ export async function GET() {
     secure: true,
     sameSite: "strict",
     path: "/",
-    expires: new Date(0), // expire immediately
+    expires: new Date(0),
   });
 
   return res;
