@@ -49,27 +49,34 @@ export async function getNotes() {
     .select("username, salt")
     .eq("username", uname)
     .single();
-  const salt = new Uint8Array(Buffer.from(currentUser?.salt, "base64"));
-  const key = await derive_key(process.env.MASTER_KEY!, salt);
-  const { data, error: note_get_error } = await supabase
-    .from("notes")
-    .select("*")
-    .eq("owner", uname);
+  if (!currentUser?.salt) {
+    return { notes: [], error: 403 }; // or { error: 401 } depending on function
+  }
+  try {
+    const salt = new Uint8Array(Buffer.from(currentUser?.salt, "base64"));
+    const key = await derive_key(process.env.MASTER_KEY!, salt);
+    const { data, error: note_get_error } = await supabase
+      .from("notes")
+      .select("*")
+      .eq("owner", uname);
 
-  const filter_data = data?.filter((elem) => elem.payload);
+    const filter_data = data?.filter((elem) => elem.payload);
 
-  const notes = await Promise.all(
-    filter_data?.map(async (elem) => {
-      const decrypted = await decrypt_note(JSON.parse(elem.payload), key);
-      const note = JSON.parse(decrypted);
-      return {
-        uid: elem.uid,
-        ...note,
-      };
-    }) ?? [],
-  );
-  const filtered = notes.filter((elem) => elem.title && elem.note);
-  return filtered;
+    const notes = await Promise.all(
+      filter_data?.map(async (elem) => {
+        const decrypted = await decrypt_note(JSON.parse(elem.payload), key);
+        const note = JSON.parse(decrypted);
+        return {
+          uid: elem.uid,
+          ...note,
+        };
+      }) ?? [],
+    );
+    const filtered = notes.filter((elem) => elem.title && elem.note);
+    return { notes: filtered, error: null };
+  } catch (err) {
+    return { notes: [], error: 403 };
+  }
 }
 
 export async function getNote(uid: string) {
@@ -79,17 +86,21 @@ export async function getNote(uid: string) {
     .select("username, salt")
     .eq("username", uname)
     .single();
-  const salt = new Uint8Array(Buffer.from(currentUser?.salt, "base64"));
-  const key = await derive_key(process.env.MASTER_KEY!, salt);
-  const { data, error: note_get_error } = await supabase
-    .from("notes")
-    .select("*")
-    .eq("uid", uid)
-    .single();
-  if (note_get_error) {
-    return { error: 404 };
+  try {
+    const salt = new Uint8Array(Buffer.from(currentUser?.salt, "base64"));
+    const key = await derive_key(process.env.MASTER_KEY!, salt);
+    const { data, error: note_get_error } = await supabase
+      .from("notes")
+      .select("*")
+      .eq("uid", uid)
+      .single();
+    if (note_get_error) {
+      return { error: 404 };
+    }
+    const decrypted = await decrypt_note(JSON.parse(data.payload), key);
+    const note = JSON.parse(decrypted);
+    return note;
+  } catch (err) {
+    return { error: 403 };
   }
-  const decrypted = await decrypt_note(JSON.parse(data.payload), key);
-  const note = JSON.parse(decrypted);
-  return note;
 }

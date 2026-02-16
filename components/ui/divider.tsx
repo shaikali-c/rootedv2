@@ -1,12 +1,17 @@
-export default function Divider({ text = "That's all" }) {
+import { Props } from "@/types/global";
+
+export default function Divider({ children }: Props) {
   return (
-    <div className="relative">
-      <div aria-hidden="true" className="absolute inset-0 flex items-center">
+    <div className="relative my-6.5 md:hidden">
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 flex items-center font-sans"
+      >
         <div className="w-full border-t border-neutral-900" />
       </div>
       <div className="relative flex justify-center">
-        <span className="bg-neutral-950 px-2 text-sm text-neutral-500">
-          {text}
+        <span className="bg-neutral-950 px-2 text-sm text-neutral-500 font-sans">
+          {children}
         </span>
       </div>
     </div>

@@ -1,8 +1,13 @@
+import Divider from "@/components/ui/divider";
 import { date_f } from "@/lib/date";
+import { Asterisk } from "lucide-react";
 
 export default async function NotesPage() {
   return (
     <div className="md:p-30 p-7 pt-5 font-secondary md:flex hidden flex-col gap-5 ">
+      <Divider>
+        <Asterisk />
+      </Divider>
       <p className="text-xs text-muted-foreground font-sans">{date_f}</p>
       <h2 className="md:text-4xl font-charter text-3xl">
         Private notes, cryptographically secured by design.

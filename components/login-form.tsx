@@ -79,7 +79,7 @@ export function LoginForm({
                   Login
                 </Button>
                 <Button variant="outline" type="button" disabled>
-                  Login anonymously (Soon)
+                  Continue anonymously (Soon)
                 </Button>
                 <FieldDescription className="text-center">
                   Don&apos;t have an account?{" "}
