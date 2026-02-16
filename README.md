@@ -1,4 +1,4 @@
-# Encrypted Notes Web App 🔒
+# Rooted
 
 A secure, privacy-focused notes application built with Next.js, Supabase, and client-side cryptography. All notes are encrypted before storage, ensuring only you can read them, not even the server.
 
