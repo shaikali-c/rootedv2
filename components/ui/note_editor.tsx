@@ -4,7 +4,6 @@ import { updateNote } from "@/app/actions/note";
 import { useEffect, useRef, useState } from "react";
 import { DropdownMenuComponent } from "@/components/build/drop-down";
 
-import { hashText } from "@/lib/hash";
 import { wordCount } from "@/lib/wordCount";
 import { date_f } from "@/lib/date";
 
@@ -24,7 +23,7 @@ export default function NoteEditor({ note_id }: { note_id: string }) {
   const [isSaving, setIsSaving] = useState(false);
 
   const debouncedContent = useDebounce(content, 3000);
-  const lastHashRef = useRef<bigint | null>(null);
+  const lastSerializedRef = useRef<string | null>(null);
   const savingRef = useRef(false);
   const isFirstRun = useRef(true);
 
@@ -43,17 +42,15 @@ export default function NoteEditor({ note_id }: { note_id: string }) {
     let cancelled = false;
 
     (async () => {
-      const newHash = await hashText(serialized);
-
-      if (newHash === lastHashRef.current) return;
-      if (savingRef.current) return; // prevent overlapping saves
+      if (serialized === lastSerializedRef.current) return;
+      if (savingRef.current) return;
 
       savingRef.current = true;
       setIsSaving(true);
 
       try {
         await updateNote(note_id, debouncedContent);
-        if (!cancelled) lastHashRef.current = newHash;
+        if (!cancelled) lastSerializedRef.current = serialized;
       } finally {
         if (!cancelled) setIsSaving(false);
         savingRef.current = false;
