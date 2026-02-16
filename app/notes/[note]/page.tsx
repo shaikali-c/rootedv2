@@ -1,6 +1,7 @@
 import { getNote } from "@/app/actions/note";
+import { Button } from "@/components/ui/button";
 import Divider from "@/components/ui/divider";
-import { Asterisk, Rose } from "lucide-react";
+import { Asterisk, Heart, Rose } from "lucide-react";
 import Link from "next/link";
 
 export default async function Note({
@@ -27,7 +28,7 @@ export default async function Note({
       <Divider>
         <Rose />
       </Divider>
-      <div className="md:p-30 p-7 font-secondary flex flex-col gap-5 md:h-dvh md:overflow-y-auto no-scrollbar md:pb-45 pb-45 pt-5">
+      <div className="md:p-30 p-7 font-secondary flex flex-col gap-5 md:h-dvh md:overflow-y-auto no-scrollbar md:pb-45 pb-25 pt-5">
         <div className="flex flex-col gap-3.5 mb-4">
           <p className="text-xs text-muted-foreground font-sans">{date}</p>
           <h2 className="md:text-4xl font-charter text-3xl">{title}</h2>
@@ -35,6 +36,10 @@ export default async function Note({
         <p className="leading-6.5 text-neutral-300/90 md:text-lg font-sans tracking-wide whitespace-pre-wrap">
           {content}
         </p>
+        <Button className="md:w-fit font-sans" variant={"outline"}>
+          <Heart />
+          Add to favourites
+        </Button>
       </div>
     </>
   );

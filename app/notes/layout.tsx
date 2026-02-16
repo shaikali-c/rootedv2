@@ -10,8 +10,8 @@ import Divider from "@/components/ui/divider";
 export default async function NotesLayout({ children }: Props) {
   return (
     <main className="w-screen min-h-dvh flex justify-center">
-      <section className="w-full min-h-dvh md:grid md:grid-cols-[37%_1fr] max-w-7xl mask-[linear-gradient(to_bottom,#f8f8f8_70%,transparent_100%)]">
-        <div className="md:p-10 p-6 md:border-r flex flex-col md:gap-6 gap-4 pt-5 md:max-h-dvh md:overflow-y-auto no-scrollbar">
+      <section className="w-full min-h-dvh md:grid md:grid-cols-[37%_1fr] max-w-7xl md:max-h-dvh md:overflow-y-auto">
+        <div className="md:p-10 p-6 flex flex-col md:gap-6 gap-4 pt-5 md:max-h-dvh md:overflow-y-auto no-scrollbar relative md:border-r border-neutral-900">
           <header className="font-semibold text-lg font-sans flex items-center justify-between h-10">
             <h2>Rooted</h2>
             <DropdownMenuComponentNotes />
