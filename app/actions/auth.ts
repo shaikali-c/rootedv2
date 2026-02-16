@@ -23,6 +23,10 @@ export async function signUp(formData: FormData) {
     return { error: "Missing fields" };
   }
 
+  if (password.length < 8) {
+    return { error: "Password should be minimum 8 characters long." };
+  }
+
   if (!(password === c_password)) {
     return { error: "Passwords don't match!" };
   }
@@ -37,7 +41,7 @@ export async function signUp(formData: FormData) {
     return { error: "Username already taken!" };
   }
   const validUname = /^(?!_)(?!.*__)[a-z0-9_]{5,20}(?<!_)$/;
-  if (!validUname) {
+  if (!validUname.test(username)) {
     return { error: "Invalid username, choose another one!" };
   }
 

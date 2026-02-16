@@ -2,7 +2,7 @@
 import { usePathname } from "next/navigation";
 import Note from "./note";
 import { Button } from "./button";
-import { Ghost } from "lucide-react";
+import { File, Ghost } from "lucide-react";
 import Link from "next/link";
 
 export default function NotesContainer({ fetch_notes }: any) {
@@ -17,11 +17,13 @@ export default function NotesContainer({ fetch_notes }: any) {
         <Note active={elem.uid === active} note={elem} key={index} />
       ))}
       {fetch_notes.length === 0 && (
-        <div className="mx-auto md:my-50 my-40 flex flex-col justify-center items-center gap-4">
-          <Ghost size={45} />
-          <h2>No notes</h2>
+        <div className="mx-auto md:my-50 my-40 flex flex-col justify-center items-center gap-3.5">
+          <File size={45} className="text-muted-foreground" />
+          <p className="text-muted-foreground max-w-50 text-center">
+            Create your first secure note to get started.
+          </p>
           <Button variant={"secondary"} asChild>
-            <Link href={"/note"}>Create new note</Link>
+            <Link href={"/note"}>Add note</Link>
           </Button>
         </div>
       )}

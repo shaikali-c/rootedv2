@@ -38,7 +38,7 @@ export function DropdownMenuComponentNotes() {
           <Plus className="w-5! h-5!" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-40 font-sans">
+      <DropdownMenuContent align="end" className="w-40 font-sans">
         <Link href={"/note"}>
           <DropdownMenuItem>
             <StickyNote />
