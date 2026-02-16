@@ -3,7 +3,7 @@
 A secure, privacy-focused notes application built with Next.js, Supabase, and client-side cryptography. All notes are encrypted before storage, ensuring only you can read them, not even the server.
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
-![Next.js](https://img.shields.io/badge/Next.js-14-black)
+![Next.js](https://img.shields.io/badge/Next.js-16-black)
 ![Supabase](https://img.shields.io/badge/Supabase-3ECF8E)
 ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen)
 
