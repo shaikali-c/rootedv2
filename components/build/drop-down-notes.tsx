@@ -18,6 +18,7 @@ import {
 import {
   Ellipsis,
   Plus,
+  RefreshCcw,
   SettingsIcon,
   SquarePen,
   StickyNote,
@@ -25,8 +26,10 @@ import {
 import DropDownMenuItemLogout from "../ui/custom/custom_dropdown";
 import Link from "next/link";
 import { nanoid } from "nanoid";
+import { useRouter } from "next/navigation";
 
 export function DropdownMenuComponentNotes() {
+  const router = useRouter();
   const [mounted, setMounted] = useState(false);
   const uid = nanoid();
 
@@ -42,6 +45,10 @@ export function DropdownMenuComponentNotes() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-40 font-sans">
+        <DropdownMenuItem onClick={() => router.refresh()}>
+          <RefreshCcw />
+          Refresh
+        </DropdownMenuItem>
         <Link href={`/new/${uid}`}>
           <DropdownMenuItem>
             <StickyNote />

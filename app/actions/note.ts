@@ -1,7 +1,7 @@
 "use server";
 
 import { supabase } from "@/lib/supabase/client";
-import { cookies, headers } from "next/headers";
+import { cookies } from "next/headers";
 import { CachedUser, Content } from "@/types/global";
 import { derive_key } from "@/lib/cryptography/key";
 import { encrypt_note } from "@/lib/cryptography/encrypt";

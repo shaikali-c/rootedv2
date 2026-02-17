@@ -2,7 +2,7 @@
 import { usePathname } from "next/navigation";
 import Note from "./note";
 import { Button } from "./button";
-import { File, Ghost } from "lucide-react";
+import { File } from "lucide-react";
 import Link from "next/link";
 
 export default function NotesContainer({ fetch_notes }: any) {

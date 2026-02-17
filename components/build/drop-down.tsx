@@ -21,6 +21,7 @@ import {
   Github,
   LibraryBig,
   MessageSquare,
+  Save,
   Settings,
   Trash2,
 } from "lucide-react";
@@ -43,7 +44,7 @@ export function DropdownMenuComponent() {
           <DropdownMenuLabel>Menu</DropdownMenuLabel>
           <Link href={"/notes"}>
             <DropdownMenuItem>
-              <Check /> Complete
+              <Save /> Save
             </DropdownMenuItem>
           </Link>
 
