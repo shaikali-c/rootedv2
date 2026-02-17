@@ -13,3 +13,8 @@ export type NoteProp = {
 export type Props = {
   children: React.ReactNode;
 };
+
+export type CachedUser = {
+  username: string;
+  key: CryptoKey;
+};

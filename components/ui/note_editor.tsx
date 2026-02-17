@@ -28,7 +28,6 @@ export default function NoteEditor({ note_id }: { note_id: string }) {
   const isFirstRun = useRef(true);
 
   const wordsCount = wordCount(content.note);
-  console.log(wordsCount);
 
   useEffect(() => {
     if (isFirstRun.current) {

@@ -15,9 +15,16 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Ellipsis } from "lucide-react";
+import {
+  Check,
+  Ellipsis,
+  Github,
+  LibraryBig,
+  MessageSquare,
+  Settings,
+  Trash2,
+} from "lucide-react";
 import Link from "next/link";
-
 export function DropdownMenuComponent() {
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
@@ -31,51 +38,38 @@ export function DropdownMenuComponent() {
           <Ellipsis />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="font-primary w-55" align="start">
+      <DropdownMenuContent className="font-primary w-45" align="end">
         <DropdownMenuGroup>
           <DropdownMenuLabel>Menu</DropdownMenuLabel>
           <Link href={"/notes"}>
-            <DropdownMenuItem>Notes</DropdownMenuItem>
+            <DropdownMenuItem>
+              <Check /> Complete
+            </DropdownMenuItem>
+          </Link>
+
+          <DropdownMenuItem>
+            <Trash2 />
+            Discard
+          </DropdownMenuItem>
+          <Link href={"/notes"}>
+            <DropdownMenuItem>
+              <LibraryBig />
+              Notes
+            </DropdownMenuItem>
           </Link>
           <DropdownMenuItem>
-            Discard
-            <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
+            <Settings />
             Settings
-            <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem>Team</DropdownMenuItem>
-          <DropdownMenuSub>
-            <DropdownMenuSubTrigger>Invite users</DropdownMenuSubTrigger>
-            <DropdownMenuPortal>
-              <DropdownMenuSubContent>
-                <DropdownMenuItem>Username</DropdownMenuItem>
-                <DropdownMenuItem>Message</DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>More...</DropdownMenuItem>
-              </DropdownMenuSubContent>
-            </DropdownMenuPortal>
-          </DropdownMenuSub>
           <DropdownMenuItem>
-            New Team
-            <DropdownMenuShortcut>⌘+T</DropdownMenuShortcut>
+            <Github />
+            GitHub
           </DropdownMenuItem>
-        </DropdownMenuGroup>
-        <DropdownMenuSeparator />
-        <DropdownMenuGroup>
-          <DropdownMenuItem>GitHub</DropdownMenuItem>
-          <DropdownMenuItem>Support</DropdownMenuItem>
-          <DropdownMenuItem disabled>API</DropdownMenuItem>
-        </DropdownMenuGroup>
-        <DropdownMenuSeparator />
-        <DropdownMenuGroup>
           <DropdownMenuItem>
-            Log out
-            <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+            <MessageSquare /> Feedback
           </DropdownMenuItem>
         </DropdownMenuGroup>
       </DropdownMenuContent>

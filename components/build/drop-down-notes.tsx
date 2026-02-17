@@ -24,9 +24,12 @@ import {
 } from "lucide-react";
 import DropDownMenuItemLogout from "../ui/custom/custom_dropdown";
 import Link from "next/link";
+import { nanoid } from "nanoid";
 
 export function DropdownMenuComponentNotes() {
   const [mounted, setMounted] = useState(false);
+  const uid = nanoid();
+
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -39,7 +42,7 @@ export function DropdownMenuComponentNotes() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-40 font-sans">
-        <Link href={"/note"}>
+        <Link href={`/new/${uid}`}>
           <DropdownMenuItem>
             <StickyNote />
             New note

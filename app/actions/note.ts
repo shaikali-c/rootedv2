@@ -1,17 +1,59 @@
 "use server";
 
 import { supabase } from "@/lib/supabase/client";
-import { headers } from "next/headers";
-import { nanoid } from "nanoid";
-import { Content } from "@/types/global";
+import { cookies, headers } from "next/headers";
+import { CachedUser, Content } from "@/types/global";
 import { derive_key } from "@/lib/cryptography/key";
 import { encrypt_note } from "@/lib/cryptography/encrypt";
 import { decrypt_note } from "@/lib/cryptography/decrypt";
 import { date_f } from "@/lib/date";
+import { jwtVerify } from "jose";
 
-export async function createNote() {
-  const username = (await headers()).get("x-username");
-  const noteId = nanoid();
+const userCache = new Map<string, CachedUser>();
+const secret = new TextEncoder().encode(process.env.JWT_SECRET!);
+const tokenCache = new Map<string, { userId: string; username: string }>();
+
+async function resolveUser() {
+  const token = (await cookies()).get("auth_token")?.value;
+  if (!token) throw new Error("No auth token");
+  let decoded = tokenCache.get(token);
+  if (!decoded) {
+    const { payload } = await jwtVerify(token, secret);
+
+    const userId = payload.sub as string;
+    const username = payload.username as string;
+
+    if (!userId || !username) throw new Error("Bad token");
+
+    decoded = { userId, username };
+    tokenCache.set(token, decoded);
+  }
+  const { userId, username } = decoded;
+
+  if (!userId || !username) throw new Error("Bad token");
+
+  let cached = userCache.get(userId);
+  if (cached) return cached;
+
+  const { data: user, error } = await supabase
+    .from("users")
+    .select("salt, username")
+    .eq("id", userId)
+    .single();
+
+  if (error || !user) throw new Error("User fetch failed");
+
+  const salt = new Uint8Array(Buffer.from(user.salt, "base64"));
+  const key = await derive_key(process.env.MASTER_KEY!, salt);
+
+  cached = { username: user.username, key };
+  userCache.set(userId, cached);
+
+  return cached;
+}
+
+export async function createNote(noteId: string) {
+  const { username } = await resolveUser();
   const { data: note, error: note_insert_error } = await supabase
     .from("notes")
     .insert({
@@ -24,83 +66,57 @@ export async function createNote() {
   return note?.uid;
 }
 export async function updateNote(noteId: string, content: Content) {
-  const userId = (await headers()).get("x-user-id");
-  const { data: currentUser, error } = await supabase
-    .from("users")
-    .select("username, salt")
-    .eq("id", userId)
-    .single();
-  const salt = new Uint8Array(Buffer.from(currentUser?.salt, "base64"));
-  const key = await derive_key(process.env.MASTER_KEY!, salt);
-  const e_note = await encrypt_note(JSON.stringify(content), key);
-  const { error: note_insert_error } = await supabase
-    .from("notes")
-    .update({
-      payload: e_note,
-    })
-    .eq("uid", noteId);
-  if (note_insert_error) console.log(note_insert_error);
+  if (!content.title.trim() && !content.note.trim()) return;
+  const { key, username } = await resolveUser();
+  const encrypted = await encrypt_note(JSON.stringify(content), key);
+  const { error } = await supabase.from("notes").upsert(
+    {
+      uid: noteId,
+      owner: username,
+      payload: encrypted,
+      date: date_f,
+    },
+    {
+      onConflict: "uid",
+    },
+  );
+  if (error) throw error;
 }
 
 export async function getNotes() {
-  const uname = (await headers()).get("x-username");
-  const { data: currentUser, error } = await supabase
-    .from("users")
-    .select("username, salt")
-    .eq("username", uname)
-    .single();
-  if (!currentUser?.salt) {
-    return { notes: [], error: 403 }; // or { error: 401 } depending on function
-  }
-  try {
-    const salt = new Uint8Array(Buffer.from(currentUser?.salt, "base64"));
-    const key = await derive_key(process.env.MASTER_KEY!, salt);
-    const { data, error: note_get_error } = await supabase
-      .from("notes")
-      .select("*")
-      .eq("owner", uname);
-
-    const filter_data = data?.filter((elem) => elem.payload);
-
-    const notes = await Promise.all(
-      filter_data?.map(async (elem) => {
-        const decrypted = await decrypt_note(JSON.parse(elem.payload), key);
-        const note = JSON.parse(decrypted);
-        return {
-          uid: elem.uid,
-          ...note,
-        };
-      }) ?? [],
-    );
-    const filtered = notes.filter((elem) => elem.title && elem.note);
-    return { notes: filtered, error: null };
-  } catch (err) {
-    return { notes: [], error: 403 };
-  }
+  const { key, username } = await resolveUser();
+  const { data, error } = await supabase
+    .from("notes")
+    .select("uid, payload")
+    .eq("owner", username);
+  if (error || !data) return { notes: [], error: 403 };
+  const notes = await Promise.all(
+    data
+      .filter((n) => n.payload)
+      .map(async (n) => {
+        const decrypted = await decrypt_note(JSON.parse(n.payload), key);
+        const parsed = JSON.parse(decrypted);
+        return { uid: n.uid, ...parsed };
+      }),
+  );
+  return {
+    notes: notes.filter((n) => n.title && n.note),
+    error: null,
+  };
 }
 
 export async function getNote(uid: string) {
-  const uname = (await headers()).get("x-username");
-  const { data: currentUser, error } = await supabase
-    .from("users")
-    .select("username, salt")
-    .eq("username", uname)
+  const { key, username } = await resolveUser();
+
+  const { data, error } = await supabase
+    .from("notes")
+    .select("payload")
+    .eq("uid", uid)
+    .eq("owner", username)
     .single();
-  try {
-    const salt = new Uint8Array(Buffer.from(currentUser?.salt, "base64"));
-    const key = await derive_key(process.env.MASTER_KEY!, salt);
-    const { data, error: note_get_error } = await supabase
-      .from("notes")
-      .select("*")
-      .eq("uid", uid)
-      .single();
-    if (note_get_error) {
-      return { error: 404 };
-    }
-    const decrypted = await decrypt_note(JSON.parse(data.payload), key);
-    const note = JSON.parse(decrypted);
-    return note;
-  } catch (err) {
-    return { error: 403 };
-  }
+
+  if (error || !data?.payload) return { error: 404 };
+
+  const decrypted = await decrypt_note(JSON.parse(data.payload), key);
+  return JSON.parse(decrypted);
 }
