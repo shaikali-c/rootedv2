@@ -6,8 +6,8 @@ import { CachedUser, Content } from "@/types/global";
 import { derive_key } from "@/lib/cryptography/key";
 import { encrypt_note } from "@/lib/cryptography/encrypt";
 import { decrypt_note } from "@/lib/cryptography/decrypt";
-import { date_f } from "@/lib/date";
 import { jwtVerify } from "jose";
+import { date_f } from "@/lib/date";
 
 const userCache = new Map<string, CachedUser>();
 const secret = new TextEncoder().encode(process.env.JWT_SECRET!);
@@ -74,7 +74,7 @@ export async function updateNote(noteId: string, content: Content) {
       uid: noteId,
       owner: username,
       payload: encrypted,
-      date: date_f,
+      date: content.date,
     },
     {
       onConflict: "uid",
