@@ -19,5 +19,11 @@
     "lib": "@/lib",
     "hooks": "@/hooks"
   },
+<<<<<<< HEAD
   "registries": {}
+=======
+  "registries": {
+    "@react-bits": "https://reactbits.dev/r/{name}.json"
+  }
+>>>>>>> feature/update_note
 }

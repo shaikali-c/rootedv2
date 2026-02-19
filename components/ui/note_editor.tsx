@@ -12,12 +12,22 @@ import { CheckCheck, Dot, LoaderCircle } from "lucide-react";
 
 import useDebounce from "@/hooks/useDebounce";
 
-export default function NoteEditor({ note_id }: { note_id: string }) {
-  const [content, setContent] = useState<Content>({
-    title: "",
-    note: "",
-    uid: note_id,
-    date: date_f,
+export default function NoteEditor({
+  note_id,
+  initial_content,
+}: {
+  note_id: string;
+  initial_content?: Content;
+}) {
+  const [content, setContent] = useState<Content>(() => {
+    if (initial_content) return initial_content;
+
+    return {
+      title: "",
+      note: "",
+      uid: note_id,
+      date: date_f,
+    };
   });
 
   const [isSaving, setIsSaving] = useState(false);
@@ -96,7 +106,7 @@ export default function NoteEditor({ note_id }: { note_id: string }) {
             onChange={handleChange}
             spellCheck={false}
             placeholder="Start writing from here..."
-            className="w-full h-full resize-none font-diary text-xl leading-relaxed tracking-wide outline-0 text-neutral-100"
+            className="w-full h-full resize-none font-diary md:text-xl text-lg leading-relaxed tracking-wide outline-0 text-neutral-300"
           />
         </section>
 

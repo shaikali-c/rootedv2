@@ -40,8 +40,7 @@ async function resolveUser() {
     .select("salt, username")
     .eq("id", userId)
     .single();
-
-  if (error || !user) throw new Error("User fetch failed");
+  if (error || !user) throw new Error("Error fetching user");
 
   const salt = new Uint8Array(Buffer.from(user.salt, "base64"));
   const key = await derive_key(process.env.MASTER_KEY!, salt);

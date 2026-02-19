@@ -2,6 +2,8 @@ import { getNote } from "@/app/actions/note";
 import { Button } from "@/components/ui/button";
 import Divider from "@/components/ui/divider";
 import { Asterisk, Heart, Rose } from "lucide-react";
+import { ButtonsDivider } from "@/components/ui/divider";
+import NoteFooter from "@/components/ui/note_footer";
 import Link from "next/link";
 
 export default async function Note({
@@ -40,6 +42,10 @@ export default async function Note({
           <Heart />
           Add to favourites
         </Button>
+        <ButtonsDivider>
+          <Rose />
+        </ButtonsDivider>
+        <NoteFooter note={note} />
       </div>
     </>
   );
