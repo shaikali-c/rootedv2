@@ -1,0 +1,56 @@
+import type { Metadata } from "next";
+import {
+  Geist,
+  Geist_Mono,
+  Inter,
+  PT_Serif,
+  Source_Serif_4,
+} from "next/font/google";
+import "./globals.css";
+
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
+
+const inter = Inter({
+  variable: "--font-primary-sans",
+  subsets: ["latin"],
+});
+
+const secondary = PT_Serif({
+  variable: "--font-d-secondary",
+  weight: ["400"],
+  subsets: ["latin"],
+});
+
+const diary = Source_Serif_4({
+  variable: "--font-diary-",
+  subsets: ["latin"],
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
+
+export const metadata: Metadata = {
+  title: "Rooted Notes",
+  description: "Cryptographically secured by design.",
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="en" className="dark">
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} ${secondary.variable} font-sans ${diary.variable} antialiased`}
+      >
+        {children}
+      </body>
+    </html>
+  );
+}
