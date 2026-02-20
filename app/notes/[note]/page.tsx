@@ -38,10 +38,6 @@ export default async function Note({
         <p className="leading-6.5 text-neutral-300/90 md:text-lg font-sans tracking-wide whitespace-pre-wrap">
           {content}
         </p>
-        <Button className="md:w-fit font-sans" variant={"outline"}>
-          <Heart />
-          Add to favourites
-        </Button>
         <ButtonsDivider>
           <Rose />
         </ButtonsDivider>
