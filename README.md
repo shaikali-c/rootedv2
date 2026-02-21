@@ -1,5 +1,7 @@
 # Rooted
-![alt text](https://github.com/shaikali-c/rootedv2/blob/665f8f9e9bddd790bc32f3a688482269ed60bab6/screenshots/main.png)
+![Homepage](https://github.com/shaikali-c/rootedv2/blob/665f8f9e9bddd790bc32f3a688482269ed60bab6/screenshots/main.png)
+## Performance
+![Performance](https://github.com/shaikali-c/rootedv2/blob/57c53108384ce2acd24fc490ecfd80d6ba539032/screenshots/performance.png)
 
 A secure, privacy-focused notes application built with Next.js, Supabase, and client-side cryptography. All notes are encrypted before storage, ensuring only you can read them, not even the server.
 
