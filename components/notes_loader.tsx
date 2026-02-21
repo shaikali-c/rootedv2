@@ -1,8 +1,6 @@
 import { getNotes } from "@/app/actions/note";
 import NotesContainer from "@/components/ui/notes_container";
 import { Frown } from "lucide-react";
-import { Button } from "./ui/button";
-import Link from "next/link";
 
 export default async function NotesLoader() {
   const { notes, error } = await getNotes();

@@ -1,11 +1,10 @@
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Asterisk, Bookmark, Flame, Heart } from "lucide-react";
+import { Bookmark, Flame, Heart } from "lucide-react";
 import { DropdownMenuComponentNotes } from "@/components/build/drop-down-notes";
 import { Props } from "@/types/global";
 import { Suspense } from "react";
 import NotesLoader from "@/components/notes_loader";
 import NotesSkeleton from "@/components/ui/notesskeleton";
-import Divider from "@/components/ui/divider";
 
 export default async function NotesLayout({ children }: Props) {
   return (
