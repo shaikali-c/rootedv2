@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="w-screen flex justify-center relative min-h-dvh bg-neutral-950">
+    <main className="w-screen flex justify-center relative min-h-dvh bg-neutral-950">
       <div className="min-h-dvh justify-center relative grid md:grid-cols-[65%_35%] font-sans w-full max-w-350">
         <section className="h-dvh p-10 flex flex-col justify-between bg-transparent text-neutral-100">
           <header className="w-full flex justify-between items-center">
@@ -43,6 +43,6 @@ export default function Home() {
           <Asterisk className="hover:animate-spin" size={80} />
         </div>
       </div>
-    </div>
+    </main>
   );
 }
