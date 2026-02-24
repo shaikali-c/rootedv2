@@ -1,15 +1,21 @@
-import { Asterisk, Cat } from "lucide-react";
+import { DotPatternWithGlowEffect } from "@/components/ui/gridpattern";
+import { AnimatedShinyTextC } from "@/components/ui/texthighlight";
+import { Rose } from "lucide-react";
 import Link from "next/link";
 
 export default function Home() {
   return (
     <main className="w-screen flex justify-center relative min-h-dvh bg-neutral-950">
+      <div className="top-0 left-0 ">
+        <DotPatternWithGlowEffect />
+      </div>
       <div className="min-h-dvh justify-center relative grid md:grid-cols-[65%_35%] font-sans w-full max-w-350">
         <section className="h-dvh p-10 flex flex-col justify-between bg-transparent text-neutral-100">
           <header className="w-full flex justify-between items-center">
             <h2 className="font-semibold text-lg flex items-center">ROOTED</h2>
           </header>
           <section className="flex flex-col gap-5.5">
+            <AnimatedShinyTextC></AnimatedShinyTextC>
             <h2
               className={`md:text-7xl capitalize text-4xl md:leading-20 leading-12 font-secondary`}
             >
@@ -33,14 +39,14 @@ export default function Home() {
               href={"https://github.com/shaikali-c"}
               className="flex items-center gap-1.5 hover:underline"
             >
-              <Cat className="hidden md:block" size={17} /> Shaik Marwaan
+              Shaik Marwaan
             </Link>
             <p className="block md:hidden">Privacy</p>
             <p className="block md:hidden">GitHub</p>
           </footer>
         </section>
         <div className="h-full md:flex gap-7 justify-center flex-col items-center md:p-0 p-5 border-t border-neutral-900 text-neutral-100 hidden">
-          <Asterisk className="hover:animate-spin" size={80} />
+          <Rose size={50} />
         </div>
       </div>
     </main>
