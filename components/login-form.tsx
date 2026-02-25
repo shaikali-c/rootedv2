@@ -62,7 +62,7 @@ export function LoginForm({
                   id="username"
                   name="username"
                   type="text"
-                  placeholder="Spider Man"
+                  placeholder="Unique name"
                   required
                 />
               </Field>
@@ -70,7 +70,13 @@ export function LoginForm({
                 <div className="flex items-center">
                   <FieldLabel htmlFor="password">Password</FieldLabel>
                 </div>
-                <Input id="password" name="password" type="password" required />
+                <Input
+                  id="password"
+                  name="password"
+                  type="password"
+                  required
+                  placeholder="Secret"
+                />
                 {error && <FieldError>{error}</FieldError>}
               </Field>
               <Field>

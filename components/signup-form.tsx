@@ -57,14 +57,20 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
                 id="username"
                 type="text"
                 name="username"
-                placeholder="Batman"
+                placeholder="A unique name"
                 required
               />
               <FieldDescription>Choose a very unqiue username</FieldDescription>
             </Field>
             <Field>
               <FieldLabel htmlFor="password">Password</FieldLabel>
-              <Input name="password" id="password" type="password" required />
+              <Input
+                name="password"
+                id="password"
+                type="password"
+                required
+                placeholder="Something secure"
+              />
             </Field>
             <Field>
               <FieldLabel htmlFor="confirm-password">
@@ -74,6 +80,7 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
                 id="confirm-password"
                 name="c_password"
                 type="password"
+                placeholder="Confirm"
                 required
               />
               {error && <FieldError>{error}</FieldError>}
