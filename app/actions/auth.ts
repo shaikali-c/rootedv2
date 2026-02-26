@@ -31,6 +31,11 @@ export async function signUp(formData: FormData) {
     return { error: "Passwords don't match!" };
   }
 
+  const validUname = /^(?!_)(?!.*__)[a-z0-9_]{5,20}(?<!_)$/;
+  if (!validUname.test(username)) {
+    return { error: "Invalid username, choose another one!" };
+  }
+
   const { data: existing } = await supabase
     .from("users")
     .select("username")
@@ -39,10 +44,6 @@ export async function signUp(formData: FormData) {
 
   if (existing) {
     return { error: "Username already taken!" };
-  }
-  const validUname = /^(?!_)(?!.*__)[a-z0-9_]{5,20}(?<!_)$/;
-  if (!validUname.test(username)) {
-    return { error: "Invalid username, choose another one!" };
   }
 
   const passwordHash = await bcrypt.hash(password, 12);
@@ -83,7 +84,7 @@ export async function signIn(formData: FormData) {
     .select("*")
     .eq("username", username)
     .single();
-
+  console.log(username, password);
   if (!data) {
     return { error: "Failed to authenticate!" };
   }
@@ -95,7 +96,7 @@ export async function signIn(formData: FormData) {
   cookieStore.set("auth_token", jwt, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    maxAge: 60 * 60 * 24 * 30,
+    maxAge: 60 * 60 * 24 * 7,
     sameSite: "lax",
     path: "/",
   });

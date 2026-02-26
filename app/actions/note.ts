@@ -87,7 +87,8 @@ export async function getNotes() {
   const { data, error } = await supabase
     .from("notes")
     .select("uid, payload")
-    .eq("owner", username);
+    .eq("owner", username)
+    .order("created_at", { ascending: false });
   if (error || !data) return { notes: [], error: 403 };
   const notes = await Promise.all(
     data
